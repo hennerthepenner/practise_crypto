@@ -22,11 +22,7 @@ def analyse(cypher):
     return possible_keys
 
 
-# Decryption of monoalphabetic algothingy. Should find out the plain text
-def decrypt(cypher, key):
-    # Build the plain text
-    plain = str()
-    for c in cypher:
+def decrypt_character(c, key):
         # Calculate the new index for the character lookup
         plain_index = ALPHABET.index(c) + key
 
@@ -36,9 +32,12 @@ def decrypt(cypher, key):
         elif plain_index >= len(ALPHABET):
             plain_index -= len(ALPHABET)
 
-        # Append a character to the plain text
-        plain += ALPHABET[plain_index]
-    return plain
+        return ALPHABET[plain_index]
+
+# Decryption of monoalphabetic algothingy. Should find out the plain text
+def decrypt(cypher, key):
+    plain = [decrypt_character(c, key) for c in cypher]
+    return "".join(plain)
 
 
 # The cypher given
