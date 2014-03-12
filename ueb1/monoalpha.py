@@ -21,10 +21,16 @@ key = alphabet.index(plain_most_common) - alphabet.index(cypher_most_common)
 # Build the plain text
 plain = str()
 for c in cypher:
+    # Calculate the new index for the character lookup
     plain_index = alphabet.index(c) + key
+
     # Make sure we can substitute in both directions
     if plain_index < 0:
         plain_index += len(alphabet)
+    elif plain_index > len(alphabet):
+        plain_index -= len(alphabet)
+
+    # Append a character to the plain text
     plain += alphabet[plain_index]
 
 print(plain)
