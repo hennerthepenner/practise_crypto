@@ -33,7 +33,7 @@ def decrypt(cypher, key):
         # Make sure we can substitute in both directions
         if plain_index < 0:
             plain_index += len(ALPHABET)
-        elif plain_index > len(ALPHABET):
+        elif plain_index >= len(ALPHABET):
             plain_index -= len(ALPHABET)
 
         # Append a character to the plain text
