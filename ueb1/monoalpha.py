@@ -1,9 +1,6 @@
 from collections import Counter
-
-
-# Define the basic plain text data (should be given)
-ALPHABET = "abcdefghijklmnopqrstuvwxyz"
-PLAIN_MOST_COMMON = "e"  # German: 14%, English: 12%
+from static import ALPHABET
+from static import PLAIN_MOST_COMMON
 
 
 # Analysis of the cypher. Should return the key
