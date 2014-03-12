@@ -1,5 +1,40 @@
 from collections import Counter
 
+
+# Define the basic plain text data (should be given)
+ALPHABET = "abcdefghijklmnopqrstuvwxyz"
+PLAIN_MOST_COMMON = "e"  # German: 14%, English: 12%
+
+
+# Analysis of the cypher. Should return the key
+def analyse(cypher):
+    # Figure out the most common character in cypher text
+    [cypher_most_common, occurences] = Counter(cypher).most_common(1)[0]
+
+    # Then it's easy to calculate the key
+    key = ALPHABET.index(PLAIN_MOST_COMMON) - ALPHABET.index(cypher_most_common)
+    return key
+
+
+# Decryption of monoalphabetic algothingy. Should find out the plain text
+def decrypt(cypher, key):
+    # Build the plain text
+    plain = str()
+    for c in cypher:
+        # Calculate the new index for the character lookup
+        plain_index = ALPHABET.index(c) + key
+
+        # Make sure we can substitute in both directions
+        if plain_index < 0:
+            plain_index += len(ALPHABET)
+        elif plain_index > len(ALPHABET):
+            plain_index -= len(ALPHABET)
+
+        # Append a character to the plain text
+        plain += ALPHABET[plain_index]
+    return plain
+
+
 # The cypher given
 cypher = """Nb prkc ifnr Fnpn jdb mrnbnv Pnkjndmn: 
 Dnkna mjb Pnadnbc xmna rw Qjwmblqnuunw. Knrmn brwm arbtjwc."""
@@ -8,29 +43,7 @@ Dnkna mjb Pnadnbc xmna rw Qjwmblqnuunw. Knrmn brwm arbtjwc."""
 # that's not a character
 cypher = cypher.lower().translate(None, ":. \n")
 
-# Define the basic plain text data (should be given)
-alphabet = "abcdefghijklmnopqrstuvwxyz"
-plain_most_common = "e"  # German: 14%, English: 12%
-
-# Figure out the most common character in cypher text
-[cypher_most_common, occurences] = Counter(cypher).most_common(1)[0]
-
-# Then it's easy to calculate the key
-key = alphabet.index(plain_most_common) - alphabet.index(cypher_most_common)
-
-# Build the plain text
-plain = str()
-for c in cypher:
-    # Calculate the new index for the character lookup
-    plain_index = alphabet.index(c) + key
-
-    # Make sure we can substitute in both directions
-    if plain_index < 0:
-        plain_index += len(alphabet)
-    elif plain_index > len(alphabet):
-        plain_index -= len(alphabet)
-
-    # Append a character to the plain text
-    plain += alphabet[plain_index]
-
+key = analyse(cypher)
+plain = decrypt(cypher, key)
 print(plain)
+
