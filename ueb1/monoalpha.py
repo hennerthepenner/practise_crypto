@@ -5,12 +5,21 @@ from static import PLAIN_MOST_COMMON
 
 # Analysis of the cypher. Should return the key
 def analyse(cypher):
-    # Figure out the most common character in cypher text
-    [cypher_most_common, occurences] = Counter(cypher).most_common(1)[0]
+    # Figure out the most common character in cypher text. Since this is just
+    # a statistical analysis, there is no guarantee, that the most common
+    # character in the cypher matches the most common character in the language
+    # of the plain text. So let's assume that the correct match is somewhere
+    # among the 3 most common characters. Return those and let the caller
+    # decide what to do with this problem.
+    most_common = Counter(cypher).most_common(3)
 
-    # Then it's easy to calculate the key
-    key = ALPHABET.index(PLAIN_MOST_COMMON) - ALPHABET.index(cypher_most_common)
-    return key
+    # But calculate the key as distance of common characters
+    possible_keys = list()
+    for m in most_common:
+        distance = ALPHABET.index(PLAIN_MOST_COMMON) - ALPHABET.index(m[0])
+        possible_keys.append(distance)
+
+    return possible_keys
 
 
 # Decryption of monoalphabetic algothingy. Should find out the plain text
@@ -40,7 +49,12 @@ Dnkna mjb Pnadnbc xmna rw Qjwmblqnuunw. Knrmn brwm arbtjwc."""
 # that's not a character
 cypher = cypher.lower().translate(None, ":. \n")
 
-key = analyse(cypher)
+possible_keys = analyse(cypher)
+
+# Since this is a simple exercise, we can assume, that the most common key is
+# the correct one
+key = possible_keys[0]
+
 plain = decrypt(cypher, key)
 print(plain)
 
