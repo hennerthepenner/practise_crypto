@@ -40,7 +40,7 @@ for m in msg:
     s[j] = tmp
 
     # Build the output byte
-    x = (s[i] + s[j]) % 16
+    x = s[(s[i] + s[j]) % 16]
 
     # XOR the message with the cipher stream
     c = xor(x, m)
